@@ -13,7 +13,7 @@ class PVOutputApi:
         self.m_system_id = system_id
         self.m_api_key = api_key
 
-    def add_status(self, pgrid_w, eday_kwh, temperature, voltage):
+    def add_status(self, pgrid_w, eday_kwh, temperature, voltage, vpv1, ipv1, vpv2, ipv2):
         t = time.localtime()
         payload = {
             'd' : "{:04}{:02}{:02}".format(t.tm_year, t.tm_mon, t.tm_mday),
@@ -27,6 +27,12 @@ class PVOutputApi:
 
         if voltage is not None:
             payload['v6'] = voltage
+
+        # ExtendedData
+        payload['v7'] = vpv1
+		payload['v8'] = ipv1
+		payload['v10'] = vpv2
+		payload['v11'] = ipv2
 
         self.call("https://pvoutput.org/service/r2/addstatus.jsp", payload)
 
