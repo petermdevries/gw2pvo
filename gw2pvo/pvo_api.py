@@ -30,9 +30,9 @@ class PVOutputApi:
 
         # ExtendedData
         payload['v7'] = vpv1
-		payload['v8'] = ipv1
-		payload['v10'] = vpv2
-		payload['v11'] = ipv2
+        payload['v8'] = ipv1
+        payload['v10'] = vpv2
+        payload['v11'] = ipv2
 
         self.call("https://pvoutput.org/service/r2/addstatus.jsp", payload)
 
