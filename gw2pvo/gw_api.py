@@ -49,7 +49,11 @@ class GoodWeApi:
             'grid_voltage' : 0,
             'pv_voltage' : 0,
             'latitude' : data['info'].get('latitude'),
-            'longitude' : data['info'].get('longitude')
+            'longitude' : data['info'].get('longitude'),
+            'vpv1': 0,
+            'ipv1': 0,
+            'vpv2': 0,
+            'ipv2': 0
         }
 
         count = 0
@@ -60,6 +64,10 @@ class GoodWeApi:
                 result['pgrid_w'] += inverterData['out_pac']
                 result['grid_voltage'] += self.parseValue(inverterData['output_voltage'], 'V')
                 result['pv_voltage'] += self.calcPvVoltage(inverterData['d'])
+                result['vpv1'] += inverterData['d']['vpv1']
+                result['ipv1'] += inverterData['d']['ipv1']
+                result['vpv2'] += inverterData['d']['vpv2']
+                result['ipv1'] += inverterData['d']['ipv2']
                 count += 1
             result['eday_kwh'] += inverterData['eday']
             result['etotal_kwh'] += inverterData['etotal']
@@ -67,6 +75,10 @@ class GoodWeApi:
             # These values should not be the sum, but the average
             result['grid_voltage'] /= count
             result['pv_voltage'] /= count
+            result['vpv1'] /= count
+            result['ipv1'] /= count
+            result['vpv2'] /= count
+            result['ipv1'] /= count           
         elif len(data['inverter']) > 0:
             # We have no online inverters, then just pick the first
             inverterData = data['inverter'][0]
@@ -74,6 +86,10 @@ class GoodWeApi:
             result['pgrid_w'] = inverterData['out_pac']
             result['grid_voltage'] = self.parseValue(inverterData['output_voltage'], 'V')
             result['pv_voltage'] = self.calcPvVoltage(inverterData['d'])
+            result['vpv1'] = inverterData['d']['vpv1']
+            result['ipv1'] = inverterData['d']['ipv1']
+            result['vpv2'] = inverterData['d']['vpv2']
+            result['ipv1'] = inverterData['d']['ipv2']            
 
         message = "{status}, {pgrid_w} W now, {eday_kwh} kWh today, {etotal_kwh} kWh all time, {grid_voltage} V grid, {pv_voltage} V PV".format(**result)
         if result['status'] == 'Normal' or result['status'] == 'Offline':
