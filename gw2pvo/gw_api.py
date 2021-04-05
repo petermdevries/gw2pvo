@@ -89,7 +89,7 @@ class GoodWeApi:
             result['vpv1'] = inverterData['d']['vpv1']
             result['ipv1'] = inverterData['d']['ipv1']
             result['vpv2'] = inverterData['d']['vpv2']
-            result['ipv1'] = inverterData['d']['ipv2']            
+            result['ipv2'] = inverterData['d']['ipv2']            
 
         message = "{status}, {pgrid_w} W now, {eday_kwh} kWh today, {etotal_kwh} kWh all time, {grid_voltage} V grid, {pv_voltage} V PV".format(**result)
         if result['status'] == 'Normal' or result['status'] == 'Offline':
