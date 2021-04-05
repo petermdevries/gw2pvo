@@ -105,6 +105,44 @@ def run_once(settings, city):
         logging.debug(str(data))
         logging.warning("Missing PVO id and/or key")
 
+    # Write to Influxdb
+    if settings.influx:
+        logging.debug('Logging to influxdb')
+        updateDate = time.localtime()
+        from influxdb import InfluxDBClient
+        json_body = [
+            {
+                "measurement": influx_measurement,
+                "tags": {
+                    "deviceId": settings.gw_station_id
+                },
+                "time": int(updateDate),
+                "fields": {
+                    "DC_Voltage_PV1": float(vpv1),
+                    "DC_Voltage_PV2": float(vpv2),
+                    "DC_Current1": float(ipv1),
+                    "DC_Current2": float(ipv2),
+                    "AC_Voltage": float(voltage),
+                    "AC_Current": float(data['iac1']),
+                    "AC_Power": float(data['pgrid_w']),
+                    "AC_Frequency": float(data['fac1']),
+                    "Inverter_Temperature": float(data['inv_temperature']),
+                    "Daily_Generation": float(data['eday_kwh']),
+                    #"Monthly_Generation": float(data['emonth']),
+                    #"Annual_Generation": float(Annual_Generation),
+                    "updateDate": int(updateDate),
+                    "Total_Generation": float(data['etotal_kwh']),
+                    #"Generation_Last_Month": float(Generation_Last_Month),
+                }
+            } 
+        ]
+	
+        client = InfluxDBClient(host=settings.influx_server, port=settings.influx_port, username=settings.influx_user, password=settings.influx_password )
+        client.switch_database(settings.influx_database)
+        success = client.write_points(json_body, time_precision='ms')
+        if not success:
+            logging.warning('Error writing to influx database')    
+
 def copy(settings):
     # Fetch readings from GoodWe
     date = datetime.strptime(settings.date, "%Y-%m-%d")
@@ -179,6 +217,14 @@ def run():
     parser.add_argument("--city", help="Sets timezone and skip uploads from dusk till dawn")
     parser.add_argument('--csv', help="Append readings to a Excel compatible CSV file, DATE in the name will be replaced by the current date")
     parser.add_argument('--version', action='version', version='%(prog)s ' + __version__)
+    parser.add_argument("--influx", help="Output readings to influxdb", metavar='INFLUX')
+    parser.add_argument("--influx_database", help="Influx database", metavar='INFLUX_DB')
+    parser.add_argument("--influx_server", help="Influx server", metavar='INFLUX_SERVER')
+    parser.add_argument("--influx_port", help="Influx server port", metavar='INFLUX_PORT') 
+    parser.add_argument("--influx_measurement", help="Influx measurement name", metavar='INFLUX_MEASUREMENT') 
+    parser.add_argument("--influx_user", help="Influx user", metavar='INFLUX_USER') 
+    parser.add_argument("--influx_password", help="Influx password", metavar='INFLUX_PASSWORD')     
+
     args = parser.parse_args()
 
     # Configure the logging
