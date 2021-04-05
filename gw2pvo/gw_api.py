@@ -67,7 +67,7 @@ class GoodWeApi:
                 result['vpv1'] += inverterData['d']['vpv1']
                 result['ipv1'] += inverterData['d']['ipv1']
                 result['vpv2'] += inverterData['d']['vpv2']
-                result['ipv1'] += inverterData['d']['ipv2']
+                result['ipv2'] += inverterData['d']['ipv2']
                 count += 1
             result['eday_kwh'] += inverterData['eday']
             result['etotal_kwh'] += inverterData['etotal']
@@ -78,7 +78,7 @@ class GoodWeApi:
             result['vpv1'] /= count
             result['ipv1'] /= count
             result['vpv2'] /= count
-            result['ipv1'] /= count           
+            result['ipv2'] /= count           
         elif len(data['inverter']) > 0:
             # We have no online inverters, then just pick the first
             inverterData = data['inverter'][0]
