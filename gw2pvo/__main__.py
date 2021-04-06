@@ -116,7 +116,7 @@ def run_once(settings, city):
                 "tags": {
                     "deviceId": settings.gw_station_id
                 },
-                "time": int(updateDate),
+                "time": updateDate,
                 "fields": {
                     "DC_Voltage_PV1": float(vpv1),
                     "DC_Voltage_PV2": float(vpv2),
@@ -130,7 +130,7 @@ def run_once(settings, city):
                     "Daily_Generation": float(data['eday_kwh']),
                     #"Monthly_Generation": float(data['emonth']),
                     #"Annual_Generation": float(Annual_Generation),
-                    "updateDate": int(updateDate),
+                    "updateDate": updateDate,
                     "Total_Generation": float(data['etotal_kwh']),
                     #"Generation_Last_Month": float(Generation_Last_Month),
                 }
