@@ -57,12 +57,15 @@ class GoodWeApi:
             'ipv1': 0,
             'vpv2': 0,
             'ipv2': 0,
-            'inv_temperature': 0
+            'inv_temperature': 0,
+            'last_refresh_time': 
+
         }
 
         count = 0
         for inverterData in data['inverter']:
             status = self.statusText(inverterData['status'])
+            result['last_refresh_time'] = inverterData['last_refresh_time']
             if status == 'Normal':
                 result['status'] = status
                 result['pgrid_w'] += inverterData['out_pac']

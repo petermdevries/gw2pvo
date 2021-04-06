@@ -108,7 +108,7 @@ def run_once(settings, city):
     # Write to Influxdb
     if settings.influx:
         logging.debug('Logging to influxdb')
-        updateDate = time.localtime()
+        updateDate = data['last_refresh_time']
         from influxdb import InfluxDBClient
         json_body = [
             {
