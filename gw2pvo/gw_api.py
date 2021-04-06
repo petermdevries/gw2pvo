@@ -58,8 +58,7 @@ class GoodWeApi:
             'vpv2': 0,
             'ipv2': 0,
             'inv_temperature': 0,
-            'last_refresh_time': 
-
+            'last_refresh_time': ''
         }
 
         count = 0
