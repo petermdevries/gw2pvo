@@ -112,7 +112,7 @@ def run_once(settings, city):
         from influxdb import InfluxDBClient
         json_body = [
             {
-                "measurement": influx_measurement,
+                "measurement": settings.influx_measurement,
                 "tags": {
                     "deviceId": settings.gw_station_id
                 },
