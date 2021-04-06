@@ -108,7 +108,8 @@ def run_once(settings, city):
     # Write to Influxdb
     if settings.influx:
         logging.debug('Logging to influxdb')
-        updateDate = data['last_refresh_time']
+        # updateDate = data['last_refresh_time']
+        updateDate = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
         from influxdb import InfluxDBClient
         json_body = [
             {
@@ -130,7 +131,7 @@ def run_once(settings, city):
                     "Daily_Generation": float(data['eday_kwh']),
                     #"Monthly_Generation": float(data['emonth']),
                     #"Annual_Generation": float(Annual_Generation),
-                    #"updateDate": updateDate,
+                    #"updateDate": int(updateDate),
                     "Total_Generation": float(data['etotal_kwh']),
                     #"Generation_Last_Month": float(Generation_Last_Month),
                 }
