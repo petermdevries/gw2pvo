@@ -130,7 +130,7 @@ def run_once(settings, city):
                     "Daily_Generation": float(data['eday_kwh']),
                     #"Monthly_Generation": float(data['emonth']),
                     #"Annual_Generation": float(Annual_Generation),
-                    "updateDate": updateDate,
+                    #"updateDate": updateDate,
                     "Total_Generation": float(data['etotal_kwh']),
                     #"Generation_Last_Month": float(Generation_Last_Month),
                 }
